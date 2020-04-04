@@ -49,9 +49,17 @@ class MainActivity : AppCompatActivity() {
 
         pocketNewsViewModel.getNewsByCategory().observe(this, Observer {
             Log.d(TAG,"mainactivity result is $it")
-          val jsonArray=  JsonParserUtils.instance.parseJsonArray(JsonParserUtils.KEY_CATEGORY_JSON_ARRAY_ITEM,JsonParserUtils.instance.parseJsonObject(it))
-          categoryList=JsonParserUtils.instance.bindJsonToCategoryModel(jsonArray)
-           setUpTabs()
+            val jsonObject=JsonParserUtils.instance.parseJsonObject(it)
+            if(jsonObject!=null) {
+                val jsonArray = JsonParserUtils.instance.parseJsonArray(
+                    JsonParserUtils.KEY_CATEGORY_JSON_ARRAY_ITEM,
+                    jsonObject
+                )
+                if (jsonArray != null) {
+                    categoryList = JsonParserUtils.instance.bindJsonToCategoryModel(jsonArray)
+                    setUpTabs()
+                }
+            }
         })
 
     }

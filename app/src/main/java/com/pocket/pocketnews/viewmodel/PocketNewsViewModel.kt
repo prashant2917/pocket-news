@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class PocketNewsViewModel : ViewModel() {
    private val liveDataNewsByCategory=MutableLiveData<String>()
+    private val liveDataNewsItem=MutableLiveData<String>()
 
     companion object{
         val TAG= PocketNewsViewModel::class.java.simpleName
@@ -26,5 +27,17 @@ class PocketNewsViewModel : ViewModel() {
 
       return liveDataNewsByCategory
   }
+
+    fun getNewsItem(url: String):LiveData<String>{
+        var result=""
+        GlobalScope.launch {
+            Dispatchers.Main
+            result=  NetworkRepository.instance.getNewsItem(url)
+            Log.d(TAG,"viewmodel news result is $result")
+            liveDataNewsItem.postValue(result)
+        }
+
+        return liveDataNewsItem
+    }
 
 }

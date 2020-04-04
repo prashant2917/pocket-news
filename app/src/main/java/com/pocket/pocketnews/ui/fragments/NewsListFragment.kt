@@ -1,20 +1,32 @@
 package com.pocket.pocketnews.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.pocket.pocketnews.R
+import com.pocket.pocketnews.application.PocketNewsApplication
 import com.pocket.pocketnews.model.Category
+import com.pocket.pocketnews.model.NewsItem
+import com.pocket.pocketnews.ui.activities.MainActivity
 import com.pocket.pocketnews.utils.Constants
-import kotlinx.android.synthetic.main.fragment_news_list.*
+import com.pocket.pocketnews.utils.JsonParserUtils
+import com.pocket.pocketnews.viewmodel.PocketNewsViewModel
 
 /**
  * A simple [Fragment] subclass.
  */
 class NewsListFragment : Fragment() {
-      private var category:Category?=null
+    private var category: Category? = null
+    private lateinit var pocketNewsViewModel: PocketNewsViewModel
+    private lateinit var pocketNewsApplication: PocketNewsApplication
+    private lateinit var _activity: FragmentActivity
+    private var newsItemList=ArrayList<NewsItem>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,9 +37,49 @@ class NewsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bundle=arguments
-         category=bundle?.getParcelable(Constants.KEY_OBJECT_CATEGORY)
-        text_view.text=category?.name
+        val bundle = arguments
+        category = bundle?.getParcelable(Constants.KEY_OBJECT_CATEGORY)
+        init()
+
+
+
+    }
+
+    /**
+     * init views and variables
+     */
+    private fun init() {
+        _activity = this!!.activity!!
+        pocketNewsApplication = _activity.application as PocketNewsApplication
+        pocketNewsViewModel =
+            ViewModelProvider.AndroidViewModelFactory.getInstance(pocketNewsApplication)
+                .create(PocketNewsViewModel::class.java)
+         if(category!!.subsections.equals(Constants.SUBSECTION_NO)){
+             getNewsItem()
+         }
+    }
+
+    /**
+     * get news item
+     */
+    private fun getNewsItem(){
+          if(!category!!.defaultUrl.isNullOrEmpty()) {
+              pocketNewsViewModel.getNewsItem(category!!.defaultUrl).observe(this, Observer {
+                  Log.d(MainActivity.TAG, "NewsListFragment result is $it")
+                  val jsonObject = JsonParserUtils.instance.parseJsonObject(it)
+                  if (jsonObject != null) {
+                      val jsonArray =
+                          JsonParserUtils.instance.parseJsonArray(
+                              JsonParserUtils.KEY_CATEGORY_JSON_ARRAY_NEWS_ITEM,
+                              jsonObject
+                          )
+                      if (jsonArray != null) {
+                          newsItemList = JsonParserUtils.instance.bindJsonToNewsItemModel(jsonArray)
+                      }
+                  }
+
+              })
+          }
 
     }
 

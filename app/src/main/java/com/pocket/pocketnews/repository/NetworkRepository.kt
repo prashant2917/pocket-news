@@ -12,6 +12,10 @@ class NetworkRepository :Repository {
       return ApiCaller.instance.getBreakingNews()
     }
 
+    override suspend fun getNewsItem(url: String): String {
+      return ApiCaller.instance.getNewsItem(url)
+    }
+
     private object HOLDER {
         val INSTANCE = NetworkRepository()
     }
