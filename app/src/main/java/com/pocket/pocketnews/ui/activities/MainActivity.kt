@@ -1,20 +1,23 @@
-package com.pocket.pocketnews.ui
+package com.pocket.pocketnews.ui.activities
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.pocket.pocketnews.R
+import com.pocket.pocketnews.adapter.ViewPagerAdapter
 import com.pocket.pocketnews.application.PocketNewsApplication
 import com.pocket.pocketnews.model.Category
 import com.pocket.pocketnews.utils.JsonParserUtils
 import com.pocket.pocketnews.viewmodel.PocketNewsViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    var categoryList= ArrayList<Category>()
+    private var categoryList= ArrayList<Category>()
     companion object{
-        val TAG=MainActivity::class.java.simpleName
+        val TAG= MainActivity::class.java.simpleName
     }
     private lateinit var pocketNewsViewModel: PocketNewsViewModel
     private lateinit var pocketNewsApplication: PocketNewsApplication
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private fun init(){
         pocketNewsApplication= application as PocketNewsApplication
       pocketNewsViewModel= ViewModelProvider.AndroidViewModelFactory.getInstance(pocketNewsApplication).create(PocketNewsViewModel::class.java)
+        setupToolbar()
         getNewsByCategory()
     }
 
@@ -38,16 +42,39 @@ class MainActivity : AppCompatActivity() {
 
     }*/
 
+    /**
+     * get news data category wise
+     */
     private fun getNewsByCategory(){
 
         pocketNewsViewModel.getNewsByCategory().observe(this, Observer {
             Log.d(TAG,"mainactivity result is $it")
           val jsonArray=  JsonParserUtils.instance.parseJsonArray(JsonParserUtils.KEY_CATEGORY_JSON_ARRAY_ITEM,JsonParserUtils.instance.parseJsonObject(it))
           categoryList=JsonParserUtils.instance.bindJsonToCategoryModel(jsonArray)
-            for (category in categoryList) {
-
-            }
+           setUpTabs()
         })
+
+    }
+
+    /**
+     * setting up toolbar to activity
+     */
+    private fun setupToolbar(){
+       setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+    }
+
+    /**
+     * setting up tabs by getting data from server
+     */
+    private  fun setUpTabs(){
+
+
+       val viewPagerAdapter=ViewPagerAdapter(supportFragmentManager,FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,categoryList)
+        view_pager_news.adapter=viewPagerAdapter
+
+        tab_news_category.setupWithViewPager(view_pager_news)
 
     }
 }
