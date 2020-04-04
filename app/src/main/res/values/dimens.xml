@@ -9,4 +9,5 @@
     <dimen name="dimen_5_dp">5dp</dimen>
     <dimen name="dimen_8_dp">8dp</dimen>
     <dimen name="dimen_10_dp">10dp</dimen>
+    <dimen name="headline_text_size">16sp</dimen>
 </resources>

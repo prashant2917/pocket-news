@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocket.pocketnews.R
+import com.pocket.pocketnews.adapter.NewsItemAdapter
 import com.pocket.pocketnews.application.PocketNewsApplication
 import com.pocket.pocketnews.model.Category
 import com.pocket.pocketnews.model.NewsItem
@@ -17,6 +19,7 @@ import com.pocket.pocketnews.ui.activities.MainActivity
 import com.pocket.pocketnews.utils.Constants
 import com.pocket.pocketnews.utils.JsonParserUtils
 import com.pocket.pocketnews.viewmodel.PocketNewsViewModel
+import kotlinx.android.synthetic.main.fragment_news_list.*
 
 /**
  * A simple [Fragment] subclass.
@@ -65,7 +68,7 @@ class NewsListFragment : Fragment() {
     private fun getNewsItem(){
           if(!category!!.defaultUrl.isNullOrEmpty()) {
               pocketNewsViewModel.getNewsItem(category!!.defaultUrl).observe(this, Observer {
-                  Log.d(MainActivity.TAG, "NewsListFragment result is $it")
+                  Log.d(MainActivity.TAG, "${category!!.name}NewsListFragment result is $it")
                   val jsonObject = JsonParserUtils.instance.parseJsonObject(it)
                   if (jsonObject != null) {
                       val jsonArray =
@@ -75,11 +78,27 @@ class NewsListFragment : Fragment() {
                           )
                       if (jsonArray != null) {
                           newsItemList = JsonParserUtils.instance.bindJsonToNewsItemModel(jsonArray)
+                          setUpRecyclerView()
+                      }
+                      else{
+
                       }
                   }
 
               })
           }
+
+    }
+
+    /**
+     * init and setup recyclerview
+     */
+    private fun setUpRecyclerView(){
+         lateinit var linearLayoutManager: LinearLayoutManager
+        linearLayoutManager = LinearLayoutManager(_activity)
+        recyler_news.layoutManager = linearLayoutManager
+        val newsItemAdapter=NewsItemAdapter(_activity,newsItemList)
+        recyler_news.adapter=newsItemAdapter
 
     }
 

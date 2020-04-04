@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.pocket.pocketnews.R
-import com.pocket.pocketnews.adapter.ViewPagerAdapter
+import com.pocket.pocketnews.adapter.CategoryViewPagerAdapter
 import com.pocket.pocketnews.application.PocketNewsApplication
 import com.pocket.pocketnews.model.Category
 import com.pocket.pocketnews.utils.JsonParserUtils
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     private  fun setUpTabs(){
 
 
-       val viewPagerAdapter=ViewPagerAdapter(supportFragmentManager,FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,categoryList)
+       val viewPagerAdapter=CategoryViewPagerAdapter(supportFragmentManager,FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,categoryList)
         view_pager_news.adapter=viewPagerAdapter
 
         tab_news_category.setupWithViewPager(view_pager_news)

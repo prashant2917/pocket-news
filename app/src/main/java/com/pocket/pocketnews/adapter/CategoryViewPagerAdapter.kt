@@ -9,7 +9,7 @@ import com.pocket.pocketnews.ui.fragments.NewsListFragment
 import com.pocket.pocketnews.utils.Constants
 import java.util.*
 
-class ViewPagerAdapter/* constructor(fm: FragmentManager, behavior: Int) : super(fm, behavior)*/(
+class CategoryViewPagerAdapter/* constructor(fm: FragmentManager, behavior: Int) : super(fm, behavior)*/(
     fm: FragmentManager,
     behavior: Int,
     private var categoryList: ArrayList<Category>

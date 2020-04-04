@@ -50,8 +50,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_toolbar_divider"
-        android:paddingLeft="@dimen/viewpager_padding"
-        android:paddingRight="@dimen/viewpager_padding"
         android:background="@color/white_color"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -63,6 +61,8 @@
             android:layout_gravity="top"
             app:tabGravity="center"
             app:tabMode="scrollable"
+            android:paddingLeft="@dimen/viewpager_padding"
+            android:paddingRight="@dimen/viewpager_padding"
             app:tabTextColor="@android:color/black" />
 
 

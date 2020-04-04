@@ -40,21 +40,23 @@ class ApiCaller {
 
     fun getNewsItem(url: String): String {
         httpURLConnection = getHttpUrlConnection(url, false)
-        val responseCode = httpURLConnection.responseCode
-        Log.d(TAG, "response code is $responseCode")
-        return (if (responseCode == HttpURLConnection.HTTP_OK && httpURLConnection.inputStream != null) {
-            Utils.convertInputStreamToString(httpURLConnection.inputStream)
+        if(httpURLConnection!=null) {
+            val responseCode = httpURLConnection.responseCode
+            Log.d(TAG, "response code is $responseCode")
+            return (if (responseCode == HttpURLConnection.HTTP_OK && httpURLConnection.inputStream != null) {
+                Utils.convertInputStreamToString(httpURLConnection.inputStream)
 
-        } else {
-            httpURLConnection.errorStream
-        }).toString()
+            } else {
+                httpURLConnection.errorStream
+            }).toString()
+        }
+        return ""
     }
 
     private fun getHttpUrlConnection(serviceURL: String, isHeader: Boolean): HttpURLConnection {
         val myURL = URL(serviceURL)
         val myURLConnection: HttpURLConnection = myURL.openConnection() as HttpURLConnection
-
-        //  httpURLConnection.connectTimeout=CONNECTION_TIME_OUT
+        myURLConnection.connectTimeout=CONNECTION_TIME_OUT
         myURLConnection.requestMethod = "GET"
         if (isHeader) {
             myURLConnection.setRequestProperty("x-rapidapi-host", RAPID_API_HOST)
@@ -79,6 +81,7 @@ class ApiCaller {
             "https://devru-times-of-india.p.rapidapi.com/feeds/feedurllist.cms?catagory="
         const val RAPID_API_KEY = "6e381e8272msh39f3910db4c60d1p138f94jsn2a973e6f590d"
         const val RAPID_API_HOST = "devru-times-of-india.p.rapidapi.com"
+        const val CONNECTION_TIME_OUT=5*1000
 
         val instance: ApiCaller by lazy { HOLDER.INSTANCE }
     }
