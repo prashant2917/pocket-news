@@ -7,9 +7,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.pocket.pocketnews.R
 import com.pocket.pocketnews.application.PocketNewsApplication
+import com.pocket.pocketnews.model.Category
+import com.pocket.pocketnews.utils.JsonParserUtils
 import com.pocket.pocketnews.viewmodel.PocketNewsViewModel
 
 class MainActivity : AppCompatActivity() {
+    var categoryList= ArrayList<Category>()
     companion object{
         val TAG=MainActivity::class.java.simpleName
     }
@@ -39,6 +42,11 @@ class MainActivity : AppCompatActivity() {
 
         pocketNewsViewModel.getNewsByCategory().observe(this, Observer {
             Log.d(TAG,"mainactivity result is $it")
+          val jsonArray=  JsonParserUtils.instance.parseJsonArray(JsonParserUtils.KEY_CATEGORY_JSON_ARRAY_ITEM,JsonParserUtils.instance.parseJsonObject(it))
+          categoryList=JsonParserUtils.instance.bindJsonToCategoryModel(jsonArray)
+            for (category in categoryList) {
+
+            }
         })
 
     }
