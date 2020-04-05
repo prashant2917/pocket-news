@@ -2,6 +2,7 @@ package com.pocket.pocketnews.ui.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
@@ -46,8 +47,9 @@ class MainActivity : AppCompatActivity() {
      * get news data category wise
      */
     private fun getNewsByCategory(){
-
+        progress_bar.visibility= View.VISIBLE
         pocketNewsViewModel.getNewsByCategory().observe(this, Observer {
+            progress_bar.visibility= View.GONE
             Log.d(TAG,"mainactivity result is $it")
             val jsonObject=JsonParserUtils.instance.parseJsonObject(it)
             if(jsonObject!=null) {

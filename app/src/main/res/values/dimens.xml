@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="viewpager_padding">16dp</dimen>
-    <dimen name="toolbar_view_margin">8dp</dimen>
-    <dimen name="toolbar_icon_size">24dp</dimen>
-    <dimen name="toolbar_header_text_size">22sp</dimen>
-    <dimen name="toolbar_divider_height">0.5dp</dimen>
-    <dimen name="dimen_4_dp">4dp</dimen>
-    <dimen name="dimen_5_dp">5dp</dimen>
-    <dimen name="dimen_8_dp">8dp</dimen>
-    <dimen name="dimen_10_dp">10dp</dimen>
-    <dimen name="headline_text_size">16sp</dimen>
+    <dimen name="viewpager_padding">@dimen/_16sdp</dimen>
+    <dimen name="toolbar_view_margin">@dimen/_8sdp</dimen>
+    <dimen name="toolbar_icon_size">@dimen/_24sdp</dimen>
+    <dimen name="toolbar_header_text_size">18sp</dimen>
+    <dimen name="toolbar_divider_height">@dimen/_1sdp</dimen>
+    <dimen name="dimen_4_dp">@dimen/_4sdp</dimen>
+    <dimen name="dimen_8_dp">@dimen/_8sdp</dimen>
+    <dimen name="dimen_10_dp">@dimen/_10sdp</dimen>
+    <dimen name="headline_image_height">@dimen/_180sdp</dimen>
+
 </resources>

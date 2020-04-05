@@ -39,16 +39,20 @@ class ApiCaller {
     }
 
     fun getNewsItem(url: String): String {
-        httpURLConnection = getHttpUrlConnection(url, false)
-        if(httpURLConnection!=null) {
-            val responseCode = httpURLConnection.responseCode
-            Log.d(TAG, "response code is $responseCode")
-            return (if (responseCode == HttpURLConnection.HTTP_OK && httpURLConnection.inputStream != null) {
-                Utils.convertInputStreamToString(httpURLConnection.inputStream)
+        try {
+            httpURLConnection = getHttpUrlConnection(url, false)
+            if(httpURLConnection!=null) {
+                val responseCode = httpURLConnection.responseCode
+                Log.d(TAG, "response code is $responseCode")
+                return (if (responseCode == HttpURLConnection.HTTP_OK && httpURLConnection.inputStream != null) {
+                    Utils.convertInputStreamToString(httpURLConnection.inputStream)
 
-            } else {
-                httpURLConnection.errorStream
-            }).toString()
+                } else {
+                    httpURLConnection.errorStream
+                }).toString()
+            }
+        } catch (e: Exception) {
+        return ""
         }
         return ""
     }

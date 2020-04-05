@@ -12,9 +12,4 @@ var thumb:String=""
 var photoCaption=""
 var keyword:String=""
 var story:String=""
-
-
-    companion object{
-
-    }
 }
