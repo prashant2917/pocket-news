@@ -11,10 +11,13 @@ import com.pocket.pocketnews.R
 import com.pocket.pocketnews.model.NewsItem
 import kotlinx.android.synthetic.main.row_recyler_news.view.*
 
-class NewsItemAdapter(_context: Context, _newsItemList: ArrayList<NewsItem>) :
+class NewsItemAdapter(
+    _context: Context,
+    _newsItemList: ArrayList<NewsItem>) :
     RecyclerView.Adapter<NewsItemAdapter.NewsItemViewHolder>() {
     private var newsItemList = _newsItemList
     private var context: Context = _context
+
 
     class NewsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -30,13 +33,16 @@ class NewsItemAdapter(_context: Context, _newsItemList: ArrayList<NewsItem>) :
     override fun onBindViewHolder(holder: NewsItemViewHolder, position: Int) {
         holder.itemView.tv_headline.text = newsItemList[position].headLine
         val photo = newsItemList[position].photo
-
-
         Glide.with(context)
-            .load(photo)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(R.drawable.ic_launcher_background)
-            .error(R.drawable.no_image_available)
-            .into(holder.itemView.iv_headline)
+                .load(photo)
+
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.no_image_available)
+                .into(holder.itemView.iv_headline)
+
+
     }
+
+
 }

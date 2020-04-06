@@ -37,7 +37,7 @@ class JsonParserUtils {
     private fun  parseJsonObjectFromObject(jsonObject: JSONObject,name:String): JSONObject? {
 
         return try {
-            if(jsonObject==null || !jsonObject.has(name) || name.isEmpty()){
+            if(!jsonObject.has(name) || name.isEmpty()){
                 return null
             }
             else{
@@ -73,19 +73,19 @@ class JsonParserUtils {
     fun bindJsonToCategoryModel(jsonArray: JSONArray): ArrayList<Category> {
         val categoryList = ArrayList<Category>()
         try {
-            if (jsonArray!=null) {
-                val length = jsonArray.length()
-                for (i in 0 until length) {
-                    val jsonObjectCategory = parseJsonObjectFromArray(jsonArray, i)
-                    val category = Category()
-                    category.id = parseJsonObject(jsonObjectCategory!!,KEY_CATEGORY_ID)
-                    category.defaultName = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_DEFAULT_NAME)
-                    category.name = parseJsonObject(jsonObjectCategory, KEY_CATEGORY_NAME)
-                    category.defaultUrl = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_DEFAULT_URL)
-                    category.sectionUrl = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_SECTION_URL)
-                    category.subsections = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_SUBSECTIONS)
-                    category.template = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_TEMPLATE)
-                    category.icon = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_ICON)
+            val length = jsonArray.length()
+            for (i in 0 until length) {
+                val jsonObjectCategory = parseJsonObjectFromArray(jsonArray, i)
+                val category = Category()
+                category.id = parseJsonObject(jsonObjectCategory!!,KEY_CATEGORY_ID)
+                category.defaultName = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_DEFAULT_NAME)
+                category.name = parseJsonObject(jsonObjectCategory, KEY_CATEGORY_NAME)
+                category.defaultUrl = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_DEFAULT_URL)
+                category.sectionUrl = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_SECTION_URL)
+                category.subsections = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_SUBSECTIONS)
+                category.template = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_TEMPLATE)
+                category.icon = parseJsonObject(jsonObjectCategory,KEY_CATEGORY_ICON)
+                if(category.name!=Constants.CATEGORY_VIDEOS) {
                     categoryList.add(category)
                 }
             }
@@ -99,28 +99,32 @@ class JsonParserUtils {
     fun bindJsonToNewsItemModel(jsonArray: JSONArray): ArrayList<NewsItem> {
         val newsItemList = ArrayList<NewsItem>()
         try {
-            if (jsonArray!=null) {
-                val length = jsonArray.length()
-                for (i in 0 until length) {
-                    val jsonObjectNewsItem = parseJsonObjectFromArray(jsonArray, i)
-                    val newsItem = NewsItem()
-                    newsItem.agency = parseJsonObject(jsonObjectNewsItem!!,KEY_NEWS_ITEM_AGENCY)
-                    newsItem.caption = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_CAPTION)
-                    newsItem.dateLine = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_DATE_LINE)
-                    newsItem.headLine = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_HEADLINE)
-                    newsItem.keyword = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_KEYWORD)
-                    newsItem.newsItemId = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_ID)
-                    newsItem.story = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_STORY)
-                    newsItem.webURL = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_WEB_URL)
-                    val jsonObjectImage=parseJsonObjectFromObject(jsonObjectNewsItem,KEY_NEWS_ITEM_IMAGE)
-                    if (jsonObjectImage != null) {
-                        newsItem.photo=parseJsonObject(jsonObjectImage,KEY_NEWS_ITEM_PHOTO)
-                        newsItem.photoCaption=parseJsonObject(jsonObjectImage,KEY_NEWS_ITEM_PHOTO_CAPTION)
-                        newsItem.thumb=parseJsonObject(jsonObjectImage,KEY_NEWS_ITEM_THUMB)
-                    }
-
-                    newsItemList.add(newsItem)
+            val length = jsonArray.length()
+            for (i in 0 until length) {
+                val jsonObjectNewsItem = parseJsonObjectFromArray(jsonArray, i)
+                val newsItem = NewsItem()
+                newsItem.agency = parseJsonObject(jsonObjectNewsItem!!,KEY_NEWS_ITEM_AGENCY)
+                newsItem.caption = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_CAPTION)
+                newsItem.dateLine = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_DATE_LINE)
+                newsItem.headLine = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_HEADLINE)
+                newsItem.keyword = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_KEYWORD)
+                newsItem.newsItemId = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_ID)
+                newsItem.story = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_STORY)
+                newsItem.webURL = parseJsonObject(jsonObjectNewsItem,KEY_NEWS_ITEM_WEB_URL)
+                val jsonObjectImage=parseJsonObjectFromObject(jsonObjectNewsItem,KEY_NEWS_ITEM_IMAGE)
+                if (jsonObjectImage != null) {
+                    newsItem.photo=parseJsonObject(jsonObjectImage,KEY_NEWS_ITEM_PHOTO)
+                    newsItem.photoCaption=parseJsonObject(jsonObjectImage,KEY_NEWS_ITEM_PHOTO_CAPTION)
+                    newsItem.thumb=parseJsonObject(jsonObjectImage,KEY_NEWS_ITEM_THUMB)
                 }
+                else {
+
+                    newsItem.photo = parseJsonObject(jsonObjectNewsItem, KEY_NEWS_ITEM_PHOTO)
+                    newsItem.photoCaption =
+                        parseJsonObject(jsonObjectNewsItem, KEY_NEWS_ITEM_PHOTO_CAPTION)
+                    newsItem.thumb = parseJsonObject(jsonObjectNewsItem, KEY_NEWS_ITEM_THUMB)
+                }
+                newsItemList.add(newsItem)
             }
         } catch (e: Exception) {
         }

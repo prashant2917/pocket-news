@@ -13,6 +13,7 @@ class PocketNewsViewModel : ViewModel() {
    private val liveDataNewsByCategory=MutableLiveData<String>()
     private val liveDataNewsItem=MutableLiveData<String>()
 
+
     companion object{
         val TAG= PocketNewsViewModel::class.java.simpleName
     }
@@ -39,5 +40,6 @@ class PocketNewsViewModel : ViewModel() {
 
         return liveDataNewsItem
     }
+
 
 }

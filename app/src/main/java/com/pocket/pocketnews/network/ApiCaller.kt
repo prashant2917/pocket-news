@@ -5,6 +5,7 @@ import com.pocket.pocketnews.utils.Utils
 import java.net.HttpURLConnection
 import java.net.URL
 
+
 class ApiCaller {
 
     private lateinit var httpURLConnection: HttpURLConnection
@@ -62,15 +63,18 @@ class ApiCaller {
         val myURLConnection: HttpURLConnection = myURL.openConnection() as HttpURLConnection
         myURLConnection.connectTimeout=CONNECTION_TIME_OUT
         myURLConnection.requestMethod = "GET"
+
         if (isHeader) {
             myURLConnection.setRequestProperty("x-rapidapi-host", RAPID_API_HOST)
             myURLConnection.setRequestProperty("x-rapidapi-key", RAPID_API_KEY)
         }
         myURLConnection.doInput = true
-
+        myURLConnection.connect()
 
         return myURLConnection
     }
+
+
 
 
     private object HOLDER {

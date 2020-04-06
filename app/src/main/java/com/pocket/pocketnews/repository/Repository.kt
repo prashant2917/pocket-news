@@ -4,4 +4,5 @@ interface Repository {
 suspend fun getNewsByCategory():String
 suspend fun getBreakingNews():String
  suspend fun getNewsItem(url:String):String
+
 }

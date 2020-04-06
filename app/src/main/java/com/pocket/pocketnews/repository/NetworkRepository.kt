@@ -16,6 +16,8 @@ class NetworkRepository :Repository {
       return ApiCaller.instance.getNewsItem(url)
     }
 
+
+
     private object HOLDER {
         val INSTANCE = NetworkRepository()
     }

@@ -10,12 +10,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pocket.pocketnews.R
 import com.pocket.pocketnews.adapter.NewsItemAdapter
 import com.pocket.pocketnews.application.PocketNewsApplication
 import com.pocket.pocketnews.model.Category
 import com.pocket.pocketnews.model.NewsItem
-import com.pocket.pocketnews.ui.activities.MainActivity
 import com.pocket.pocketnews.utils.Constants
 import com.pocket.pocketnews.utils.JsonParserUtils
 import com.pocket.pocketnews.viewmodel.PocketNewsViewModel
@@ -57,21 +57,22 @@ class NewsListFragment : Fragment() {
         pocketNewsViewModel =
             ViewModelProvider.AndroidViewModelFactory.getInstance(pocketNewsApplication)
                 .create(PocketNewsViewModel::class.java)
-         if(category!!.subsections == Constants.SUBSECTION_NO){
-             getNewsItem()
-         }
+        swipe_layout.isRefreshing=true
+        swipe_layout.setOnRefreshListener(refreshListener)
+              getNewsItem()
     }
 
     /**
      * get news item
      */
     private fun getNewsItem(){
-        progress_bar.visibility=View.VISIBLE
+      //  progress_bar.visibility=View.VISIBLE
 
         if(category!!.defaultUrl.isNotEmpty()) {
               pocketNewsViewModel.getNewsItem(category!!.defaultUrl).observe(this, Observer {
-                  Log.d(MainActivity.TAG, "${category!!.name}NewsListFragment result is $it")
-                  progress_bar.visibility=View.GONE
+                  Log.d(TAG, "${category!!.name}NewsListFragment result is $it")
+                 // progress_bar.visibility=View.GONE
+                  swipe_layout.isRefreshing=false
                   val jsonObject = JsonParserUtils.instance.parseJsonObject(it)
                   if (jsonObject != null) {
                       val jsonArray =
@@ -102,4 +103,11 @@ class NewsListFragment : Fragment() {
 
     }
 
+    companion object{
+        val TAG= NewsListFragment::class.java.simpleName
+    }
+
+    val refreshListener= SwipeRefreshLayout.OnRefreshListener {
+       getNewsItem()
+    }
 }
