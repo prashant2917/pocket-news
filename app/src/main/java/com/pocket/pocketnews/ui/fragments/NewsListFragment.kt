@@ -66,11 +66,10 @@ class NewsListFragment : Fragment() {
      * get news item
      */
     private fun getNewsItem(){
-      //  progress_bar.visibility=View.VISIBLE
 
         if(category!!.defaultUrl.isNotEmpty()) {
               pocketNewsViewModel.getNewsItem(category!!.defaultUrl).observe(this, Observer {
-                  Log.d(TAG, "${category!!.name}NewsListFragment result is $it")
+                  Log.d(TAG, "${category!!.name} NewsListFragment result is $it")
                  // progress_bar.visibility=View.GONE
                   swipe_layout.isRefreshing=false
                   val jsonObject = JsonParserUtils.instance.parseJsonObject(it)
@@ -81,8 +80,15 @@ class NewsListFragment : Fragment() {
                               jsonObject
                           )
                       if (jsonArray != null) {
+                          Log.d("###","json array not null")
                           newsItemList = JsonParserUtils.instance.bindJsonToNewsItemModel(jsonArray)
                           setUpRecyclerView()
+                      }
+                      else{
+                         //todo load subsection news
+                           if(hasSubSection()){
+
+                           }
                       }
 
                   }
@@ -109,5 +115,9 @@ class NewsListFragment : Fragment() {
 
     val refreshListener= SwipeRefreshLayout.OnRefreshListener {
        getNewsItem()
+    }
+
+    fun hasSubSection():Boolean{
+      return category!!.subsections==Constants.SUBSECTION_YES
     }
 }
