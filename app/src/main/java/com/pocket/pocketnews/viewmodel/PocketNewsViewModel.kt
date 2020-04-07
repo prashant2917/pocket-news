@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 class PocketNewsViewModel : ViewModel() {
    private val liveDataNewsByCategory=MutableLiveData<String>()
     private val liveDataNewsItem=MutableLiveData<String>()
+    private val liveDataSubSection=MutableLiveData<String>()
 
 
     companion object{
@@ -22,7 +23,7 @@ class PocketNewsViewModel : ViewModel() {
       GlobalScope.launch {
           Dispatchers.Main
            result=  NetworkRepository.instance.getNewsByCategory()
-          Log.d(TAG,"viewmodel result is $result")
+          Log.d(TAG,"viewmodel category result is $result")
           liveDataNewsByCategory.postValue(result)
       }
 
@@ -39,6 +40,18 @@ class PocketNewsViewModel : ViewModel() {
         }
 
         return liveDataNewsItem
+    }
+
+    fun getSubSections(url:String):LiveData<String>{
+        var result=""
+        GlobalScope.launch {
+            Dispatchers.Main
+            result=  NetworkRepository.instance.getSubSections(url)
+            Log.d(TAG,"viewmodel subsection result is $result")
+            liveDataSubSection.postValue(result)
+        }
+
+        return liveDataSubSection
     }
 
 

@@ -26,22 +26,10 @@ class ApiCaller {
 
     }
 
-    fun getNewsByCategory(): String {
+    private fun getResultFromApi(url: String, isHeader: Boolean):String{
 
-        httpURLConnection = getHttpUrlConnection(CATEGORY_NEWS_URL, true)
-        val responseCode = httpURLConnection.responseCode
-        Log.d(TAG, "response code is $responseCode")
-        return (if (responseCode == HttpURLConnection.HTTP_OK) {
-            Utils.convertInputStreamToString(httpURLConnection.inputStream)
-
-        } else {
-            httpURLConnection.errorStream
-        }).toString()
-    }
-
-    fun getNewsItem(url: String): String {
         try {
-            httpURLConnection = getHttpUrlConnection(url, false)
+            httpURLConnection = getHttpUrlConnection(url, isHeader)
             if(httpURLConnection!=null) {
                 val responseCode = httpURLConnection.responseCode
                 Log.d(TAG, "response code is $responseCode")
@@ -53,9 +41,21 @@ class ApiCaller {
                 }).toString()
             }
         } catch (e: Exception) {
-        return ""
+            return ""
         }
         return ""
+    }
+
+    fun getNewsByCategory(): String {
+        return getResultFromApi(CATEGORY_NEWS_URL,true)
+    }
+
+    fun getNewsItem(url: String): String {
+        return getResultFromApi(url,false)
+    }
+
+    fun getSubSections(url:String):String{
+       return getResultFromApi(url,false)
     }
 
     private fun getHttpUrlConnection(serviceURL: String, isHeader: Boolean): HttpURLConnection {

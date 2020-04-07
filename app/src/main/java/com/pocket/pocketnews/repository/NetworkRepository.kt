@@ -16,6 +16,9 @@ class NetworkRepository :Repository {
       return ApiCaller.instance.getNewsItem(url)
     }
 
+    override suspend fun getSubSections(url: String): String {
+        return ApiCaller.instance.getSubSections(url)
+    }
 
 
     private object HOLDER {

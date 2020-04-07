@@ -17,6 +17,10 @@ class Utils {
 
         }
 
+        fun generateRandomNumber(maxNumber:Int):Int{
+            return (0 until maxNumber).random()
+        }
+
 
 
     }
